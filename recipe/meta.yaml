@@ -33,6 +33,7 @@ requirements:
     - intel-openmp                        # [win]
   host:
     - cython <={{ cython_max }}
+    - libgomp                             # [linux]
     - numpy
     - pip
     - pytest-runner
