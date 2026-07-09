@@ -1,6 +1,5 @@
 {% set name = "scikit-network" %}
 {% set version = "0.33.5" %}
-{% set cython_max = "3.0.12" %}
 
 package:
   name: {{ name|lower }}
@@ -21,21 +20,13 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - {{ stdlib('c') }}
-    - cython <={{ cython_max }}
-    - numpy
-    - pytest-runner
-    - python
-    - scipy
-    - setuptools
-    - llvm-openmp  # [osx]
-    - libgomp  # [linux]
-    - intel-openmp  # [win]
   host:
-    - cython <={{ cython_max }}
-    - libgomp  # [linux]
-    - numpy
+    - cython 3.0.12
+    - libgomp 15.2.0  # [linux]
+    - llvm-openmp  # [osx]
+    - intel-openmp  # [win]
+    - numpy {{ numpy }}
     - pip
-    - pytest-runner
     - python
     - scipy
     - setuptools
@@ -43,7 +34,6 @@ requirements:
     - python
     - numpy >=1.22.4
     - scipy >=1.7.3
-    - libgomp  # [linux]
 
 test:
   imports:
@@ -53,6 +43,7 @@ test:
     - sknetwork/test_*.py
   requires:
     - pip
+    - pytest
     - pytest-cov
   commands:
     - pip check
