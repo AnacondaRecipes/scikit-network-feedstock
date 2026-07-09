@@ -1,0 +1,69 @@
+{% set name = "scikit-network" %}
+{% set version = "0.33.5" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  # Upstream sdist on PyPI is broken; use GitHub tarball (conda-forge/scikit-network-feedstock)
+  url: https://github.com/sknetwork-team/{{ name }}/archive/refs/tags/v{{ version }}.tar.gz
+  sha256: e0b327d2c278b694afbacd042953b48bf298cac7baf1634cfd316e39a743780f
+
+build:
+  number: 0
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  skip: true  # [py<310]
+
+requirements:
+  build:
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - {{ stdlib('c') }}
+  host:
+    - cython 3.0.12
+    - libgomp 15.2.0  # [linux]
+    - llvm-openmp  # [osx]
+    - intel-openmp  # [win]
+    - numpy {{ numpy }}
+    - pip
+    - python
+    - scipy
+    - setuptools
+  run:
+    - python
+    - numpy >=1.22.4
+    - scipy >=1.7.3
+    - libgomp  # [linux]
+
+test:
+  imports:
+    - sknetwork
+  source_files:
+    - sknetwork/*/tests/
+    - sknetwork/test_*.py
+  requires:
+    - pip
+    - pytest
+    - pytest-cov
+  commands:
+    - pip check
+    - python run_test.py
+
+about:
+  home: https://github.com/sknetwork-team/scikit-network
+  summary: Graph algorithms
+  description: |-
+    Python package for the analysis of large graphs:
+    - Memory-efficient representation of graphs as sparse matrices in scipy format
+    - Fast algorithms
+    - Simple API inspired by scikit-learn
+  license: BSD-3-Clause
+  license_family: BSD
+  license_file: LICENSE
+  doc_url: https://scikit-network.readthedocs.io
+  dev_url: https://github.com/sknetwork-team/scikit-network
+
+extra:
+  recipe-maintainers:
+    - bollwyvl
