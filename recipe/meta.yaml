@@ -3,12 +3,12 @@
 {% set cython_max = "3.0.12" %}
 
 package:
-  name: {{ name }}
+  name: {{ name|lower }}
   version: {{ version }}
 
 source:
   # Upstream sdist on PyPI is broken; use GitHub tarball (conda-forge/scikit-network-feedstock)
-  url: https://github.com/sknetwork-team/scikit-network/archive/refs/tags/v{{ version }}.tar.gz
+  url: https://github.com/sknetwork-team/{{ name }}/archive/refs/tags/v{{ version }}.tar.gz
   sha256: e0b327d2c278b694afbacd042953b48bf298cac7baf1634cfd316e39a743780f
 
 build:
@@ -21,19 +21,18 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - {{ stdlib('c') }}
-    - cross-python_{{ target_platform }}  # [build_platform != target_platform]
-    - cython <={{ cython_max }}           # [build_platform != target_platform]
-    - numpy                               # [build_platform != target_platform]
-    - pytest-runner                       # [build_platform != target_platform]
-    - python                              # [build_platform != target_platform]
-    - scipy                               # [build_platform != target_platform]
-    - setuptools                          # [build_platform != target_platform]
-    - llvm-openmp                         # [osx]
-    - libgomp                             # [linux]
-    - intel-openmp                        # [win]
+    - cython <={{ cython_max }}
+    - numpy
+    - pytest-runner
+    - python
+    - scipy
+    - setuptools
+    - llvm-openmp  # [osx]
+    - libgomp  # [linux]
+    - intel-openmp  # [win]
   host:
     - cython <={{ cython_max }}
-    - libgomp                             # [linux]
+    - libgomp  # [linux]
     - numpy
     - pip
     - pytest-runner
@@ -44,7 +43,7 @@ requirements:
     - python
     - numpy >=1.22.4
     - scipy >=1.7.3
-    - libgomp                             # [linux]
+    - libgomp  # [linux]
 
 test:
   imports:
